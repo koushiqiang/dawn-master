@@ -1,0 +1,134 @@
+# 项目相关配置
+dawn:
+  # 名称
+  name: Dawn
+  # 描述
+  description: 分布式数据库管理系统
+  # 版本
+  version: 1.0.0
+  # 获取ip地址开关
+  addressEnabled: true
+  #演示模式
+  demoMode: false
+  # 实例演示开关
+  demoEnabled: true
+  # 文件上传路径
+  profile: D:/profile/
+
+  user:
+    indexUrl: /index
+
+#logging
+
+# 开发环境配置
+server:
+  # 服务端口
+  port: 8083
+  servlet:
+    # 项目contextPath
+    context-path: /
+    # 单点登录配置
+    session:
+      cookie:
+        name: OUATH2-CLIENT-DAWNSESSIONID01
+  tomcat:
+    # tomcat的URI编码
+    uri-encoding: UTF-8
+    # tomcat最大线程数，默认为200
+    max-threads: 500
+    # Tomcat启动初始化的线程数，默认值25
+    min-spare-threads: 30
+
+## 日志配置
+#logging:
+#  config: classpath:logConfig/log4j2.xml
+#  level:
+#    com.neutrino.dawn: debug
+#    org.springframework: warn
+
+# 日志配置
+logging:
+  level:
+    com.neutrino.dawn: debug
+    org.springframework: warn
+
+
+# Spring配置
+spring:
+  # 模板引擎
+  thymeleaf:
+    mode: HTML
+    encoding: utf-8
+    # 禁用缓存
+    cache: false
+
+  # 数据源配置
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://110.41.20.184:3306/dawn
+    username: root
+    password: root
+    # 初始连接数
+    initialSize: 5
+    # 最小连接池数量
+    minIdle: 10
+    # 最大连接池数量
+    maxActive: 20
+    # 配置获取连接等待超时的时间
+    maxWait: 30000
+    # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    timeBetweenEvictionRunsMillis: 60000
+    # 配置一个连接在池中最小生存的时间，单位是毫秒
+    minEvictableIdleTimeMillis: 300000
+    # 配置一个连接在池中最大生存的时间，单位是毫秒
+    maxEvictableIdleTimeMillis: 900000
+    # 配置检测连接是否有效
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    statViewServlet:
+      enabled: true
+      # 设置白名单，不填则允许所有访问
+      allow:
+      url-pattern: /monitor/druid/*
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri:
+# MyBatis
+mybatis:
+  # 搜索指定包别名
+  typeAliasesPackage: com.neutrino
+  # 配置mapper的扫描，找到所有的mapper.xml映射文件
+  #  mapperLocations: classpath*:mapper/**/*Mapper.xml , com/neutrino/dawn/quartz/mapper/**/*Mapper.xml
+  mapperLocations: classpath*:/mapper/**/*Mapper.xml
+  # 加载全局的配置文件
+  configLocation: classpath:mybatis-config.xml
+
+jwt:
+  secret: Hbvd3ZlKCf8r2Qwq3q3enMGkNWka64C8RckRgrBpY7ZvU5WtbU8R6UwS5AWnKmtr
+
+# 单点登录配置
+oauth2-server-url: http://localhost:8080
+
+security:
+  oauth2:
+    # 注意要和AuthorizationServerConfig 的 secret一致
+    client-secret: dawn123456
+    # 获取access-token的地址
+    access-token-uri: ${oauth2-server-url}/oauth/token
+    # 获取授权码的地址
+    user-authorization-uri: ${oauth2-server-url}/oauth/authorize
+    client:
+      # 注意要和AuthorizationServerConfig的withClient一致
+      client-id: dawn
+    resource:
+      token-info-uri: ${oauth2-server-url}/oauth/check_token
+      user-info-uri: ${oauth2-server-url}/user
+      service-id: dawn
+      # 获取JWT公钥的地址
+      jwt:
+        key-uri: ${oauth2-server-url}/oauth/token_key

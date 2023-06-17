@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>dawn</artifactId>
+        <groupId>com.neutrino</groupId>
+        <version>1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>dawn-admin</artifactId>
+    <description>
+        web服务入口
+    </description>
+
+    <dependencies>
+<!--         核心模块-->
+        <dependency>
+            <groupId>com.neutrino</groupId>
+            <artifactId>dawn-frameworker</artifactId>
+            <version>${dawn.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.11.0</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <configuration>
+                <executable>true</executable>
+                <!-- <fork>true</fork>  如果没有该配置，devtools不会生效 -->
+            </configuration>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>repackage</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+        </plugins>
+
+
+        <filters>
+            <filter>src/main/resources/${env}/application.yml</filter>
+        </filters>
+
+    <resources>
+        <resource>
+            <directory>src/main/resources</directory>
+            <filtering>true</filtering>
+            <excludes>
+                <exclude>dev/*</exclude>
+                <exclude>test/*</exclude>
+                <exclude>run/*</exclude>
+                <exclude>static/**</exclude>
+            </excludes>
+        </resource>
+        <resource>
+            <directory>src/main/resources/${env}</directory>
+            <filtering>true</filtering>
+        </resource>
+        <resource>
+            <directory>src/main/resources</directory>
+            <filtering>false</filtering>
+            <includes>
+                <include>static/**</include>
+            </includes>
+        </resource>
+    </resources>
+
+
+</build>
+
+</project>
